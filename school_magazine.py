@@ -5,24 +5,70 @@ import argparse
 from random import randint
 
                                                                         
-def analysis_academic_performance(table, number_best_students):
-    #for best_students in table['mean'][:number_best_students]:
+def analysis_academic_performance(table, number_best_students, klass_students, bukva_students, klas):
+    if klass_students == 9:
+        table['parall'] = 9
+
+    elif klass_students == 10:
+        table['parall'] = 10
+
+    else:
+        table = ''   
+        print('Ты ввел не существующий класс....')
+
+
+    if bukva_students.lower() == 'а':
+        class_A_names = dict(zip(klas['Б'], klas['А']))
+
+        table['bukva'] = table['bukva'].replace({'Б': 'А'})
+        table['name'] = table['name'].replace(class_A_names)
+
+    elif bukva_students.lower() == 'б':
+        class_B_names = dict(zip(klas['А'], klas['Б']))
+
+        table['bukva'] = table['bukva'].replace({'А': 'Б'})
+        table['name'] = table['name'].replace(class_B_names)
+
+    elif bukva_students.lower() == 'none':
+        class_A_and_B_names = klas
+        class_A_and_B = dict(zip(klas['А'], klas['Б']))
+
+        table['bukva'] = table['bukva'].replace(class_A_and_B)
+        table['name'] = table['name'].replace(class_A_and_B_names)
+
+    else:
+        table = ''    
+        print('Ты ввел не существующий класс....')   
+
     best_students = table[['parall', 'bukva', 'name', 'mathematics', 'russian', 'computer science', 'mean']]
     best_students = table.sort_values(by = 'mean', ascending=False).head(number_best_students)
-    print(best_students)
+
+    return best_students
+
 
 def main():
-    parser = argparse.ArgumentParser(description='Этот код находит (n) кол-во лучших учащихся среди 10 и 9 классов. Запустите файл: shcool_magazine.py --number(чило лучших учеников)')
+    parser = argparse.ArgumentParser(description='Этот код находит (n) кол-во лучших учащихся среди 10 и 9 классов. Запустите файл: shcool_magazine.py --number(чило лучших учеников) --klass(цифра класса) --bukva(буква класса)')
     parser.add_argument('--number',
                         type=int,
                         default=3,
                         help='Введите колличечтво лучших учеников (до 20)')
+    parser.add_argument('--klass',
+                        type=int,
+                        default=10,
+                        help='Введите класс 9 или 10')
+    parser.add_argument('--letter',
+                        type=str,
+                        choices=['А', 'а', 'Б', 'б', 'None', 'none'],
+                        default='None',
+                        help='Введите букву класса А или Б (НА РУССКОМ ЯЗЫКЕ)')
 
     args = parser.parse_args()
     number_best_students = args.number
+    klass_students = args.klass
+    bukva_students = args.letter
 
-    klas = {'A':['Смирнов', 'Иванов', 'Петров', 'Сидоров', 'Кузнецов', 'Попов', 'Васильев', 'Михайлов', 'Федоров', 'Павлов'], 
-'B':['Ковалев', 'Егоров', 'Леонов', 'Лебедев', 'Новиков', 'Суханов', 'Алексеев', 'Григорьев', 'Тимофеев', 'Зайцев']
+    klas = {'А':['Смирнов', 'Иванов', 'Петров', 'Сидоров', 'Кузнецов', 'Попов', 'Васильев', 'Михайлов', 'Федоров', 'Павлов'], 
+'Б':['Ковалев', 'Егоров', 'Леонов', 'Лебедев', 'Новиков', 'Суханов', 'Алексеев', 'Григорьев', 'Тимофеев', 'Зайцев']
 }
 
     table = pd.DataFrame(klas)        
@@ -41,15 +87,7 @@ def main():
     table = table.sort_values(by = 'mean', ascending=False).head(20)
     table = table.reset_index(drop = True)
 
-    spis = [9 if i%2==1 else 10 for i in range(len(table))]
-    table['parall'] = spis
-
-    #table = table[['parall', 'bukva', 'name', 'mathematics', 'russian', 'computer science', 'mean']]
-    tabl = table.pivot_table(index = ['parall', 'bukva'], columns = 'mathematics', values = 'mean', aggfunc = 'count')
-
-    #print(table)
-    # print(tabl)
-    analysis_academic_performance(table, number_best_students)
+    print(analysis_academic_performance(table, number_best_students, klass_students, bukva_students, klas))
     
 
 if __name__ == '__main__':
