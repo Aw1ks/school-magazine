@@ -47,7 +47,7 @@ def analysis_academic_performance(table, number_best_students, klass_students, b
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Этот код находит (n) кол-во лучших учащихся среди 10 и 9 классов. Запустите файл: shcool_magazine.py --number(чило лучших учеников) --klass(цифра класса) --bukva(буква класса)')
+    parser = argparse.ArgumentParser(description='Этот код находит (n) кол-во лучших учащихся среди 10 и 9 классов. ')
     parser.add_argument('--number',
                         type=int,
                         default=3,
