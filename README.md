@@ -14,3 +14,11 @@ To run the code and change the number of top students, you need to call an argum
 ```
  python school_magazine.py --number (the number of the best students (up to 20))
 ```
+To change the letter of the class, you need to call an argument when running the script and specify the letter of the class:
+```
+python school_magazine.py --letter (the letter of the class)
+```
+To change the class digit, you need to call an argument when running the script and specify the class digit:
+```
+python school_magazine.py --klass (the number of the class)
+```
